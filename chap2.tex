@@ -1,70 +1,31 @@
-\chapter{Symbolic Cross-References\label{chap:blah}}
+\chapter{Related Work\label{chap:blah}}
+This section describes the related work by various authors in the field of Delay Tolerant Networks (DTNs), routing in DTNs and security strategies employed in DTNs.
 
-This chapter has more information on symbolic cross-referencing.
-In addition, there are examples showing how to typeset a figure
-and a simple table.
+\section{Delay Tolerant Networks}
 
-\section{Figures}
+Networks in areas hit by natural disasters or military ad hoc networks violate one or more of the assumptions in the TCP/IP architecture as noted by K.Fall in ~\cite{rw1}. They propose an architecture for these challenged networks, to operate on top of the existing OSI networking model and use a store and forward message-passing mechanism. The messages to be sent are aggregated into “bundles” and sit in the application layer of the networking stack ~\cite{rw2}. The Bundle Protocol described in ~\cite{rw3} consists of several concatenated blocks that can be extended if required. It provides the ability to cope with intermittent connectivity while also being able to take advantage of scheduled, predicted, and opportunistic connectivity. This allows us to create a software-only solution as it can be integrated into existing devices without the need for additional hardware infrastructure to deploy the network. The data to be sent can also be combined into a single bundle to maximize the available bandwidth and reduce the number of trips required. Using bundles also allows us to maintain the authenticity of the users and the integrity of the data between the endpoints ~\cite{rw4}.
 
-Figure~\ref{fig:encrypted_virus} has been typeset so that it
-occupies half the width of text on a page ({\tt width=0.5}). Note the 
-symbolic cross-reference, that is, you simple \verb+\ref{fig:encrypted_virus}+
-to obtain the appropriate number for Figure~\ref{fig:encrypted_virus}.
+\section{Routing in DTNs}
 
-\begin{figure}[htb]
-\centering
-\includegraphics[width=0.5\textwidth]{images/encrypted_virus.jpg}
-\caption{Encrypted virus before and after decryption.} 
-\label{fig:encrypted_virus}
-\end{figure}
+Routing in DTNs can be classified as follows:
+\begin{enumerate}[label=(\roman*)]
+\item Flooding Based
+\item Forwarding Based
+\item Probability Based
+\end{enumerate}
 
-If you move things around, insert or delete text, Figure~\ref{fig:encrypted_virus}
-will still give you the correct number. This is a very handy feature.
+Flooding-based routing techniques are one of the simplest DTN routing techniques of which Epidemic routing is an example. A. Vahdat and D. Becker explain in ~\cite{rw5} how it forwards the message to all nodes it comes into contact with except the source. This increases the message delivery ratio in disrupted networks. The overhead however is significant as a node must have sufficient buffer space to store the packet. Mobile device battery life is a critical factor that must be taken into account when designing these systems. The high delivery ratio cannot be ignored and therefore multiple optimizations exist for epidemic-based routing. P. Garg et. all in ~\cite{rw6} noted a 15\% increase in delivery ratio and a 34\% decrease in the overhead by implementing simple battery and buffer size constraints. Another optimization criterion proposed in ~\cite{rw7} is to broadcast the current node’s message list and need the neighbors to then request the messages it does not have to remove redundancy. This was shown to have the lowest average packet rate when compared to other Epidemic routing techniques. While these optimizations improve upon the existing epidemic routing protocol, it still requires multiple nodes to store redundant messages and is therefore not considered for this project.
 
 
-\section{Tables}
+Forwarding-based routing techniques, on the other hand, find the best path for data transfer between nodes, to do this however they require some form of network topology information. The topology information can be decided from the source node as in Source Routing ~\cite{rw8} or on a hop-by-hop basis known as Location-based routing ~\cite{rw8}; here each hop simply stores the next physically closest connected hop. Other routing algorithms include Window aware adaptive replication (ORWAR) which exploits the context of mobile nodes such as their speed and direction and estimates the size of the contact window. It then selects messages based on their importance and size to minimize partially transmitted messages and optimize overall bandwidth ~\cite{rw9}. These routing protocols work effectively when information about the topology is known or can be detected. We can use a version of forwarding-based routing as we only have a single hop between the server and the client i.e., the transport. The transport, however, is not a trusted node in the network and therefore cannot be relied upon. Hence, we use the server to store a mapping between transports and clients once the bundles are verified.
 
-Table~\ref{tab:19} 
-shows some interesting stuff. I hope you enjoy it.
+Probability-based routing or history-based routing is proposed in ~\cite{rw10} as an enhancement to epidemic routing and termed PROPHET (Probabilistic Routing Protocol using History of Encounters and Transitivity). The delivery probability is calculated as the likelihood of a node delivering a message to the other node when they encounter each other. The more often they meet, the higher the probability and vice versa ~\cite{rw11}. This predictability is also transitive. Nodes exchange messages only when the probability is high, they also update their probability along with the message. There have been multiple enhancements to PROPHET, such as incorporating the bundle protocols' hop count along with the delivery probability when selecting the next hop to reduce delay and overhead ~\cite{rw12}. PROPHET+ is another enhancement that uses a weighted function consisting of evaluations of the nodes' buffer size, location, power and popularity along with the delivery probability to maximize delivery rate and minimize transmission delay. This can be used in our project to rank the clients that the transports come in contact with. Each time a transport successfully delivers a bundle to the client, its score can be increased. The server can now use this score to rank the clients that each transport connects to, allowing clients that have a higher probability to be reached to be given priority over others with a lower probability.
 
-\begin{table}[htb]
-\caption{MysteryTwister Zodiac Challenge\label{tab:19}}
-\begin{center}
-\begin{tabular}{c|lc}\hline\hline
-Case & \multicolumn{1}{c}{Description} & Percentage\\ \hline
-1F & Fast outer hill climb and English stats & 13.00\% \\
-1S & Slow outer hill climb and English stats & \phantom{0}4.00\% \\
-2F & Fast outer hill climb and Zodiac~408 stats & 70.00\% \\
-2S & Slow outer hill climb and Zodiac~408 stats & 84.00\% \\ \hline\hline
-\end{tabular}
-\end{center}
-\end{table}
+\section{Security in DTNs}
 
+DTNs use bundles as the message-passing protocol as such multiple security features are proposed as extension blocks in bundles. The bundle security protocol ~\cite{rw4} and the newer BPSec (Bundle Protocol Security)~\cite{rw13} are two such proposals. Both use extension blocks in the bundle protocol to provide security features such as integrity, confidentiality, and authentication~\cite{rw13}. Each of which have their own block. An extension security block can also be used to encrypt the feature blocks mentioned previously ~\cite{rw4}.
 
-\section{Citations}
+Key management however is not considered in either of these protocols and is left to the implementation. A framework for key management is provided in ~\cite{rw14} for DTNs that use the bundle security protocol which can be implemented. They propose using ESKTS (Efficient and Scalable Key Transport Scheme) which is based on public key cryptography and proxy signatures ~\cite{rw15} as it provides hop-to-hop and end-to-end integrity along with authentication and confidentiality. This however relies on delegating the signing capability to the proxy entity (next hop in our case), as we do not trust the intermediate transport nodes in our implementation this scheme cannot be implemented.
 
-References are cited using the \verb+\cite+ command. For example,
-see~\cite{harden} for information on the Zodiac killer. You can include more than one 
-reference in a single citation, like this~\cite{harden,bib1,basa,bib3,bib2,glurk,bib7,bib10,bib11}
-or this~\cite{bibAC,bib17}.
-
-
-\section{The Last Word}
-
-There are a lot of other uses for symbolic cross-referencing. For example, this chapter
-title has a label so I can refer to Chapter~\ref{chap:blah} (as I just did).
-My recommendation is that you include a label with anything and everything that 
-is numbered. If it has a number, there is a good chance that you will
-refer to it at some point.
-
-Finally, note that you need to \LaTeX\ a file at least twice (three times to
-be safe) without changing anything to be sure that the numbering is correct.
-Why is that? Good question.
-When you \LaTeX\ your document, various auxiliary files are created. Most of these files contain
-information related to cross-references that appear in your {\tt .tex} file (or files). The next time you 
-\LaTeX\ your document, the information from the previous run is read from
-these auxiliary files. Consequently, after making changes to any {\tt .tex}
-file, you will need to \LaTeX\ your document at least twice to be sure that the
-cross-reference information is updated in the resulting pdf. In fact, you should
-run \LaTeX\ three consecutive times to be certain that cross-references are correct.
+Self-Certifying path names avoid key management machinery by using a locator that includes the remote server’s public key~\cite{rw16}. It provides access to users and not to specific clients. The identity of a user is its public key and other client identifiers such as L2 MAC addresses can be hidden even from transports using mac address randomization ~\cite{rw17}. The server’s public key and hostname can be baked into the client application allowing clients to access the server. The encryption key generation can be done using the double ratchet algorithm employed in the signal’s messaging protocol ~\cite{rw18}. The algorithm combines a symmetric key and a Diffie-Helman (DH) ratchet to provide backward and forward secrecy. This is done by using the DH-obtained secret as the input to the symmetric key derivation function. The resultant symmetric key can then be used to encrypt/decrypt the message. The DH ratchet can be ticked for every bundle which resets the symmetric key ratchet as well. The double ratchet encryption can be used in non-messaging applications as shown in ~\cite{rw19} where the double ratchet is employed as a low-cost edge security gateway to protect legacy devices behind it and in ~\cite{rw20} where it is used to provide security authentication for user equipment in 5G networks.
 
